@@ -1,2 +1,2 @@
 # wwwxue.github.io
-Basic Fortran rules and usage
+博客记录

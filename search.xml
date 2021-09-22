@@ -352,7 +352,28 @@
   <entry>
     <title>Fortran</title>
     <url>/2021/09/21/Fortran/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<p>文章中所有结果使用GCC编译器。</p>
+<h3 id="输入输出"><a href="#输入输出" class="headerlink" title="输入输出"></a>输入输出</h3><ol>
+<li>write 和 print 的区别<br>write 的基本格式：<br><code>write(*,*)var</code><br>print的基本格式：<br><code>print *,var</code><br>print 只有一个星号，用来指定输出格式，缺少的另一个星号为输出位置，print只能输出到屏幕，因此无输出位置选项。其他用法基本一致。</li>
+<li>格式化输出<br>write(*,*)的标准写法<br><code>write(UNIT=*,FMT=*)</code><br>其中UNIT用来指定输出位置，FMT用来指定输出格式。<br>write的另一种表示方式：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">write(*,100) var</span><br><span class="line">100 format(I4)</span><br></pre></td></tr></table></figure>
+程序中，使用行代码表示格式，也就是用第二行的格式输出变量a,I4表示只会用4个字符宽度输出整数。Fortran 中的Format包括Iw、Aw、Fw.d、nX等。</li>
+</ol>
+<p>– 格式化说明<br><code>write(*,&quot;(I5)&quot;) 100</code><br>以5个字符输出整数，至少输出5个数字，不足的前面补空格。<br><code>write(*,&quot;(I3)&quot;) 1000</code><br>以3个字符输出，但是长度不够，结果显示***作为警告。<br><code>write(*,&quot;(I5.3)&quot;) 10</code><br>固定使用5个字符段，不足的补空格，至少输出三个数字。输出结果为</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">010</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>read 用法与write基本相同</li>
+</ul>
+<hr>
+<h2 id="流程控制"><a href="#流程控制" class="headerlink" title="流程控制"></a>流程控制</h2><ul>
+<li>判断语句<figure class="highlight fortran"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (expression) <span class="keyword">then</span></span><br><span class="line">  ...</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+注意：<code>if (4&gt;3&gt;2)</code>是不对的，必须写成 <code>if (4&gt;3 .and. 3&gt;2 )</code>. 因为逻辑运算从左到右执行，4&gt;3结果为logical类型=1，并不大于2。</li>
+</ul>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><ol>
+<li>《Fortran 95程序设计》</li>
+<li><a href="http://math.ecnu.edu.cn/~jypan/Teaching/ParaComp/Fortran95slide.pdf">Fortran 95 程序设计讲义</a>    </li>
+</ol>
+]]></content>
   </entry>
   <entry>
     <title>C语言</title>

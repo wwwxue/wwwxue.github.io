@@ -378,6 +378,69 @@
   <entry>
     <title>C语言</title>
     <url>/2021/09/21/C%E8%AF%AD%E8%A8%80/</url>
+    <content><![CDATA[<h1 id="C"><a href="#C" class="headerlink" title="C"></a>C</h1><p>标签（空格分隔）： 未分类</p>
+<hr>
+<h3 id="结构体struct用法"><a href="#结构体struct用法" class="headerlink" title="结构体struct用法"></a>结构体struct用法</h3><p>结构体一般用于具有相同属性的变量，提高代码的可读性，但是不提高代码效率，结构体的一般形式：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct struct_name&#123;</span><br><span class="line">成员列表</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>例如<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct student&#123;</span><br><span class="line"> char name;</span><br><span class="line"> int num;</span><br><span class="line"> int age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>这样就定义了一个新的结构体变量类型student（不是结构体变量，变量需要另行定义），该结构体变量类型中包含三个变量name num age。定义完结构体变量类型，下面定义结构体变量：<br><code>struct student student1, student2, student3;</code><br>这样就定义了三个新的变量student1,student2,student3，然后是对结构体变量的赋值</p>
+<h3 id="static变量及其作用"><a href="#static变量及其作用" class="headerlink" title="static变量及其作用"></a>static变量及其作用</h3><p>在 C 语言中，static 关键字不仅可以用来修饰变量，还可以用来修饰函数。在使用 static 关键字修饰变量时，我们称此变量为静态变量。</p>
+<p>静态变量的存储方式与全局变量一样，都是静态存储方式。但这里需要特别说明的是，静态变量属于静态存储方式，属于静态存储方式的变量却不一定就是静态变量。例如，全局变量虽然属于静态存储方式，但并不是静态变量，它必须由 static 加以定义后才能成为静态全局变量。  </p>
+<ul>
+<li>隐藏与隔离的作用<br>上面已经阐述过，全局变量虽然属于静态存储方式，但并不是静态变量。全局变量的作用域是整个源程序，当一个源程序由多个源文件组成时，全局变量在各个源文件中都是有效的。<br>如果我们希望全局变量仅限于在本源文件中使用，在其他源文件中不能引用，也就是说限制其作用域只在定义该变量的源文件内有效，而在同一源程序的其他源文件中不能使用。这时，就可以通过在全局变量之前加上关键字 static 来实现，使全局变量被定义成为一个静态全局变量。这样就可以避免在其他源文件中引起的错误。也就起到了对其他源文件进行隐藏与隔离错误的作用，有利于模块化程序设计。</li>
+<li>保持变量内容的持久性<br>有时候，我们希望函数中局部变量的值在函数调用结束之后不会消失，而仍然保留其原值。即它所占用的存储单元不释放，在下一次调用该函数时，其局部变量的值仍然存在，也就是上一次函数调用结束时的值。这时候，我们就应该将该局部变量用关键字 static 声明为“静态局部变量”。<br>当将局部变量声明为静态局部变量的时候，也就改变了局部变量的存储位置，即从原来的栈中存放改为静态存储区存放。这让它看起来很像全局变量，其实静态局部变量与全局变量的主要区别就在于可见性，静态局部变量只在其被声明的代码块中是可见的。<br>对某些必须在调用之间保持局部变量的值的子程序而言，静态局部变量是特别重要的。如果没有静态局部变量，则必须在这类函数中使用全局变量，由此也就打开了引入副作用的大门。使用静态局部变量最好的示例就是实现统计次数的功能，如下面示例所示。<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">void count();</span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">    int i=0;</span><br><span class="line">    for (i = 0;i &lt;= 5;i++)</span><br><span class="line">    &#123;</span><br><span class="line">            count();</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line">void count()</span><br><span class="line">&#123;</span><br><span class="line">    /*声明一个静态局部变量*/</span><br><span class="line">    static num = 0;</span><br><span class="line">    num++;</span><br><span class="line">    printf(&quot;%d\n&quot;,num);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+在该代码中，我们通过在count()函数里声明一个静态局部变量 num 来作为计数器。因为静态局部变量是在编译时赋初值的，且只赋初值一次，在程序运行时它已有初值。以后在每次调用函数时就不再重新赋初值，而是保留上次函数调用结束时的值。这样，count() 函数每次被调用的时候，静态局部变量 num 就会保持上一次调用的值，然后再执行自增运算，这样就实现了计数功能。同时，它又避免了使用全局变量。<br>通过上面的示例，我们可以得出静态局部变量一般的使用场景</li>
+</ul>
+<ol>
+<li>需要保留函数上一次调用结束时的值。</li>
+<li>如果初始化后，变量只会被引用而不会改变其值，则这时用静态局部变量比较方便，以免每次调用时重新赋值。</li>
+</ol>
+<p>在静态数据区，内存中所有的字节默认值都是0x00。静态变量与全局变量也一样，它们都存储在静态数据区中，因此其变量的值默认也为 0</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>算法</title>
+    <url>/2021/09/25/%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<p><span class="math display">\[ 
+f(n)=\begin{cases}
+n/2, &amp; \text{如果$ x&lt;=2 $}\\
+3n+1, &amp; \text{如果$ x&gt;2 $}
+\end{cases}
+\]</span></p>
+<h2 id="卡尔曼滤波器">卡尔曼滤波器</h2>
+<p>optimal recursive data processing algrithm<br />
+<a href="https://www.bilibili.com/video/BV1ez4y1X7eR/?spm_id_from=333.788.recommend_more_video.1">参考bilibili DR_CAN</a></p>
+<ol type="1">
+<li>递归算法基本原理 以硬币直径测量为例，测量值为<span class="math inline">\(z_k\)</span>，估计值为<span class="math inline">\(\hat x_k\)</span>，若估计值取测量值的平均值，则有如下公式： <span class="math display">\[
+\begin{aligned}
+ \hat x_k &amp;= \frac{1}{k}(z_1+z_2+...+z_k) \\ 
+          &amp;= \frac{1}{k}(z_1+z_2+...+z_{k-1})+\frac{1}{k}z_k \\
+          &amp;=\hat x_{k-1}+\frac{1}{k}*(z_k-\hat x_{k-1})
+ \end{aligned}\\
+即： 当前的估计值=上一次估计值+系数*（当前测量值-上次测量值）
+\]</span></li>
+</ol>
+<p>迭代过程的好处在于，只需要上一次的计算结果，不用关心以前的结果。我们把<span class="math inline">\(\frac{1}{k}\)</span>设为<span class="math inline">\(K_k\)</span>，即卡尔曼因数。则公式上述变化为： <span class="math display">\[\hat x_k = \hat x_{k-1}+K_k(z_k-\hat x_{k-1})\]</span> 设观测误差<span class="math inline">\(e_{EST}\)</span>和测量误差<span class="math inline">\(e_{MEA}\)</span>。则<span class="math inline">\(K_k=\frac{e_{ESTk-1}}{e_{ESTk-1}+e_{MEAk}}\)</span>，此公式推导在后面解释，为kanlmn滤波器的核心公式。讨论两种情况：① k-1时的估计误差&gt;&gt;k时的测量误差，则<span class="math inline">\(\hat x_k=z_k\)</span>。此时相当于相信这次测量的结果。②k时的测量误差&gt;&gt;k-1时的估计误差，则<span class="math inline">\(\hat x_k=\hat x_{k-1}\)</span>。 相当于相信k-1时的估计结果。 ** 这里的疑问是，怎么知道估计误差和测量误差的大小，如果估计误差和测量误差能够知道，那么实际值不就能够直接获取了吗？ **补充回答：测量误差是和测量精度有关的最大测量误差，估计误差初始值可以随便给一个数，后面的需要迭代计算估计误差，而不是真正的与实际值之间的偏差。 计算的三个步骤 * 计算 kalman gain <span class="math inline">\(K_k=\frac{e_{ESTk-1}}{e_{ESTk-1}+e_{MEAk}}\)</span> * 计算 $x_k = x_{k-1} + K_k(z_k-x_{k-1}) $ * 更新 $e_{EST_k} = (1-K_k)e_{EST_{k-1}} $</p>
+<p>其中第三步公式推导，仍然放到后面写。下面进行实例计算，一个物体实际长度50m（计算过程无需实际长度）, <span class="math inline">\(\hat x_0=40m\)</span>, <span class="math inline">\(e_{EST_0} 给一个值5mm\)</span> <span class="math inline">\(z_1=51m, e_{MEA_k}=3m\)</span></p>
+<p>** 到此为止不明白为什么要这样算，直接求平均值不挺好的吗。</p>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>kalman filter</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux</title>
+    <url>/2021/09/30/Linux/</url>
     <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>test</title>
+    <url>/2021/10/05/test/</url>
+    <content><![CDATA[<h2 id="测试数学公式">测试数学公式</h2>
+<p><span class="math display">\[
+1_2+1=2
+\]</span></p>
+<p>1_2+1=2</p>
+]]></content>
   </entry>
 </search>

@@ -5,15 +5,15 @@
   
   <title>算法 | 王雪的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="\[  f(n)&#x3D;\begin{cases} n&#x2F;2, &amp; \text{如果$ x&lt;&#x3D;2 $}\\ 3n+1, &amp; \text{如果$ x&gt;2 $} \end{cases} \] 卡尔曼滤波器 optimal recursive data processing algrithm 参考bilibili DR_CAN  递归算法基本原理 以硬币直径测量为">
+  <meta name="description" content="卡尔曼滤波器 optimal recursive data processing algrithm 参考bilibili DR_CAN  递归算法基本原理 以硬币直径测量为例，测量值为\(z_k\)，估计值为\(\hat x_k\)，若估计值取测量值的平均值，则有如下公式： \[ \begin{aligned}  \hat x_k &amp;&#x3D; \frac{1}{k}(z_1+z_2+">
 <meta property="og:type" content="article">
 <meta property="og:title" content="算法">
 <meta property="og:url" content="http://example.com/2021/09/25/%E7%AE%97%E6%B3%95/index.html">
 <meta property="og:site_name" content="王雪的博客">
-<meta property="og:description" content="\[  f(n)&#x3D;\begin{cases} n&#x2F;2, &amp; \text{如果$ x&lt;&#x3D;2 $}\\ 3n+1, &amp; \text{如果$ x&gt;2 $} \end{cases} \] 卡尔曼滤波器 optimal recursive data processing algrithm 参考bilibili DR_CAN  递归算法基本原理 以硬币直径测量为">
+<meta property="og:description" content="卡尔曼滤波器 optimal recursive data processing algrithm 参考bilibili DR_CAN  递归算法基本原理 以硬币直径测量为例，测量值为\(z_k\)，估计值为\(\hat x_k\)，若估计值取测量值的平均值，则有如下公式： \[ \begin{aligned}  \hat x_k &amp;&#x3D; \frac{1}{k}(z_1+z_2+">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-09-25T09:06:49.000Z">
-<meta property="article:modified_time" content="2021-10-05T05:13:53.285Z">
+<meta property="article:modified_time" content="2021-10-05T10:28:34.076Z">
 <meta property="article:tag" content="kalman filter">
 <meta name="twitter:card" content="summary">
   
@@ -98,13 +98,7 @@
       
         <!-- Table of Contents -->
         
-        <p><span class="math display">\[ 
-f(n)=\begin{cases}
-n/2, &amp; \text{如果$ x&lt;=2 $}\\
-3n+1, &amp; \text{如果$ x&gt;2 $}
-\end{cases}
-\]</span></p>
-<h2 id="卡尔曼滤波器">卡尔曼滤波器</h2>
+        <h2 id="卡尔曼滤波器">卡尔曼滤波器</h2>
 <p>optimal recursive data processing algrithm<br />
 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1ez4y1X7eR/?spm_id_from=333.788.recommend_more_video.1">参考bilibili DR_CAN</a></p>
 <ol type="1">
@@ -112,13 +106,18 @@ n/2, &amp; \text{如果$ x&lt;=2 $}\\
 \begin{aligned}
  \hat x_k &amp;= \frac{1}{k}(z_1+z_2+...+z_k) \\ 
           &amp;= \frac{1}{k}(z_1+z_2+...+z_{k-1})+\frac{1}{k}z_k \\
-          &amp;=\hat x_{k-1}+\frac{1}{k}*(z_k-\hat x_{k-1})
+          &amp;=\hat x_{k-1}+\frac{1}{k}*(z_k-\hat x_{k-1})\\
  \end{aligned}\\
-即： 当前的估计值=上一次估计值+系数*（当前测量值-上次测量值）
-\]</span></li>
+即： 当前的估计值＆=上一次估计值+系数*（当前测量值-上次测量值）
+\]</span><br />
+　迭代过程的好处在于，只需要上一次的计算结果，不用关心以前的结果。我们把<span class="math inline">\(\frac{1}{k}\)</span>设为<span class="math inline">\(K_k\)</span>，即卡尔曼因数。则公式上述变化为： <span class="math display">\[\hat x_k = \hat x_{k-1}+K_k(z_k-\hat x_{k-1})\]</span> 　设观测误差<span class="math inline">\(e_{EST}\)</span>和测量误差<span class="math inline">\(e_{MEA}\)</span>。则<span class="math inline">\(K_k=\frac{e_{ESTk-1}}{e_{ESTk-1}+e_{MEAk}}\)</span>，此公式推导在后面解释，为kanlmn滤波器的核心公式。讨论两种情况：① k-1时的估计误差&gt;&gt;k时的测量误差，则<span class="math inline">\(\hat x_k=z_k\)</span>。此时相当于相信这次测量的结果。②k时的测量误差&gt;&gt;k-1时的估计误差，则<span class="math inline">\(\hat x_k=\hat x_{k-1}\)</span>。 相当于相信k-1时的估计结果。<br />
+** 这里的疑问是，怎么知道估计误差和测量误差的大小，如果估计误差和测量误差能够知道，那么实际值不就能够直接获取了吗？　　 ** 补充回答：测量误差是和测量精度有关的最大测量误差，估计误差初始值可以随便给一个数，后面的需要迭代计算估计误差，而不是真正的与实际值之间的偏差。 计算的三个步骤</li>
 </ol>
-<p>迭代过程的好处在于，只需要上一次的计算结果，不用关心以前的结果。我们把<span class="math inline">\(\frac{1}{k}\)</span>设为<span class="math inline">\(K_k\)</span>，即卡尔曼因数。则公式上述变化为： <span class="math display">\[\hat x_k = \hat x_{k-1}+K_k(z_k-\hat x_{k-1})\]</span> 设观测误差<span class="math inline">\(e_{EST}\)</span>和测量误差<span class="math inline">\(e_{MEA}\)</span>。则<span class="math inline">\(K_k=\frac{e_{ESTk-1}}{e_{ESTk-1}+e_{MEAk}}\)</span>，此公式推导在后面解释，为kanlmn滤波器的核心公式。讨论两种情况：① k-1时的估计误差&gt;&gt;k时的测量误差，则<span class="math inline">\(\hat x_k=z_k\)</span>。此时相当于相信这次测量的结果。②k时的测量误差&gt;&gt;k-1时的估计误差，则<span class="math inline">\(\hat x_k=\hat x_{k-1}\)</span>。 相当于相信k-1时的估计结果。 ** 这里的疑问是，怎么知道估计误差和测量误差的大小，如果估计误差和测量误差能够知道，那么实际值不就能够直接获取了吗？ **补充回答：测量误差是和测量精度有关的最大测量误差，估计误差初始值可以随便给一个数，后面的需要迭代计算估计误差，而不是真正的与实际值之间的偏差。 计算的三个步骤 * 计算 kalman gain <span class="math inline">\(K_k=\frac{e_{ESTk-1}}{e_{ESTk-1}+e_{MEAk}}\)</span> * 计算 $x_k = x_{k-1} + K_k(z_k-x_{k-1}) $ * 更新 $e_{EST_k} = (1-K_k)e_{EST_{k-1}} $</p>
-<p>其中第三步公式推导，仍然放到后面写。下面进行实例计算，一个物体实际长度50m（计算过程无需实际长度）, <span class="math inline">\(\hat x_0=40m\)</span>, <span class="math inline">\(e_{EST_0} 给一个值5mm\)</span> <span class="math inline">\(z_1=51m, e_{MEA_k}=3m\)</span></p>
+<ul>
+<li>计算 kalman gain <span class="math inline">\(K_k=\frac{e_{ESTk-1}}{e_{ESTk-1}+e_{MEAk}}\)</span></li>
+<li>计算 $x_k = x_{k-1} + K_k(z_k-x_{k-1}) $</li>
+<li>更新 $e_{EST_k} = (1-K_k)e_{EST_{k-1}} $ 　其中第三步公式推导，仍然放到后面写。下面进行实例计算，一个物体实际长度50m（计算过程无需实际长度）, <span class="math inline">\(\hat x_0=40m\)</span>, <span class="math inline">\(e_{EST_0} 给一个值5mm\)</span> <span class="math inline">\(z_1=51m, e_{MEA_k}=3m\)</span></li>
+</ul>
 <p>** 到此为止不明白为什么要这样算，直接求平均值不挺好的吗。</p>
 
       

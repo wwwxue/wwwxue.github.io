@@ -99,9 +99,7 @@
 <li>格式化输出<br>write(*,*)的标准写法<br><code>write(UNIT=*,FMT=*)</code><br>其中UNIT用来指定输出位置，FMT用来指定输出格式。<br>write的另一种表示方式：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">write(*,100) var</span><br><span class="line">100 format(I4)</span><br></pre></td></tr></table></figure>
 程序中，使用行代码表示格式，也就是用第二行的格式输出变量a,I4表示只会用4个字符宽度输出整数。Fortran 中的Format包括Iw、Aw、Fw.d、nX等。</li>
 </ol>
-<p>– 格式化说明<br><code>write(*,&quot;(I5)&quot;) 100</code><br>以5个字符输出整数，至少输出5个数字，不足的前面补空格。<br><code>write(*,&quot;(I3)&quot;) 1000</code><br>以3个字符输出，但是长度不够，结果显示***作为警告。<br><code>write(*,&quot;(I5.3)&quot;) 10</code><br>固定使用5个字符段，不足的补空格，至少输出三个数字。输出结果为</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">010</span><br></pre></td></tr></table></figure>
-
+<p>— 格式化说明<br><code>write(*,&quot;(I5)&quot;) 100</code><br>以5个字符输出整数，至少输出5个数字，不足的前面补空格。<br><code>write(*,&quot;(I3)&quot;) 1000</code><br>以3个字符输出，但是长度不够，结果显示*<em>*作为警告。<br>`write(</em>,”(I5.3)”) 10`<br>固定使用5个字符段，不足的补空格，至少输出三个数字。输出结果为<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">010</span><br></pre></td></tr></table></figure></p>
 <ul>
 <li>read 用法与write基本相同</li>
 </ul>
@@ -118,7 +116,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/09/21/Fortran/" data-id="cktthdm5d0004h8toe7wt7s5v" class="article-share-link">分享</a>
+      <a data-url="http://example.com/2021/09/21/Fortran/" data-id="ckue44q0100035otobix49fmy" class="article-share-link">分享</a>
       
       
       
